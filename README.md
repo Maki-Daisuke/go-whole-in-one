@@ -29,6 +29,18 @@ It searches `yourcmd-sub` with consulting `PATH` environment variable and
 execute it passing rest of the arguments.
 
 
+Description
+-----------
+
+This is yet another Go library for Git way of subcommand. This is inspired by
+[façade](https://github.com/pepabo/facade) and I like its concept. However,
+I don't need fancy colored output and it is even harmful when I implement filter
+commands, which read from STDIN, do something and write output to STDOUT.
+
+I wanted more simple and low I/O overhead library. The less overhead is the better,
+of course. That's why I wrote Frontal.
+
+
 Built-in Command
 ----------------
 

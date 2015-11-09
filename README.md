@@ -25,4 +25,4 @@ Then, you can call your command as follows:
 $ yourcmd sub
 ```
 
-It searches `yourcmd-sub` consulting `PATH` env variable.
+It searches `yourcmd-sub` and runs it with consulting `PATH` env variable.

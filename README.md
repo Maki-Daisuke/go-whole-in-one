@@ -78,6 +78,96 @@ Frontal has the following predefined built-in subcommands:
 You can easily override them calling `frontal.Register`.
 
 
+Functions
+---------
+
+### `func Exec()`
+
+`Exec` searches a command implementation corresponding to the name of subcommand
+and executes it. Because it may call `exec` systemcall, lines following Exec()
+will never be executed:
+
+```go
+func main(){
+  frontal.Exec()      // This may call `exec` systemcall inside,
+  fmt.Println("???")  // thus, execution never reaches here.
+}
+```
+
+This rule is also the case for built-in commands. `Exec` calls `os.Exit(0)`
+when a built-in command is successfully returned. If you want to report error
+from your built-in command, you should call `os.Exit` manually with non-zero integer.
+
+### `func Register(subname string, cmd frontal.Command)`
+
+`Register` binds `cmd` to subcommand name `subname`.
+
+```go
+frontal.Register("foo", frontal.FuncCommand(func(argv0 string, argv []string){
+  fmt.Printf("You called '%s' subcommand with: %v", argv0, argv)
+}))
+```
+
+Variables
+---------
+
+### `var Name string`
+
+`Name` holds the name of root command. Initial value is the command name
+extracted from `os.Args[0]`. This value is used by built-in `help` and `version`
+subcommand. Also, it is consulted to look up executable files for subcommands.
+
+You can overwrite the value to customize the behavior of Frontal. For example:
+
+```
+func main(){
+  frontal.Name = "mysupercmd"
+  frontal.Exec()  // searches "mysupercmd-*" even if the actual command's name
+                  // is "supercmd".
+}
+```
+
+### `var Version string`
+
+`Version` holds version string of your command. Its default value is `"0"`.
+This is used by built-in `version` subcommand.
+
+Expected use case is using `-ldflags` command line option when you build your app:
+
+```
+$ go build -ldflags "-X github.com/Maki-Daisuke/frontal.Version=0.1"
+$ ./your-cmd version
+your-cmd version 0.1
+```
+
+This will replace the value of `Version` with `"0.1"` at build time. Yes, it is
+too long to type everytime! Maybe, the following usage is more practical.
+In your code:
+
+```go
+package main
+
+import "github.com/Maki-Daisuke/frontal"
+
+var version string
+
+func main(){
+  frontal.Version = version
+  frontal.Exec()
+}
+```
+
+Then, in the command line:
+
+```
+$ go build -ldflags "-X main.version=0.1"
+$ ./your-cmd version
+your-cmd version 0.1
+```
+
+It looks better.
+
+
 License
 -------
 

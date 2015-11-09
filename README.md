@@ -22,10 +22,11 @@ func main(){
 Then, you can call your command as follows:
 
 ```
-$ yourcmd sub
+$ yourcmd sub arg1 arg2
 ```
 
-It searches `yourcmd-sub` and runs it with consulting `PATH` env variable.
+It searches `yourcmd-sub` with consulting `PATH` environment variable and
+execute it passing rest of the arguments.
 
 
 License

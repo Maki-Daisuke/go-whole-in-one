@@ -25,12 +25,12 @@ func init() {
 
 func Exec() {
 	if len(os.Args) <= 1 {
-		builtins["help"].Exec([]string{})
+		builtins["--help"].Exec("--help", []string{})
 		os.Exit(1)
 	}
 	subname := os.Args[1]
 	if cmd, ok := builtins[subname]; ok {
-		cmd.Exec(os.Args[2:])
+		cmd.Exec(subname, os.Args[2:])
 		os.Exit(0)
 	}
 	cmdname := Name + "-" + subname

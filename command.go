@@ -1,11 +1,11 @@
 package frontal
 
 type Command interface {
-	Exec(args []string)
+	Exec(subname string, args []string)
 }
 
-type FuncCommand func(args []string)
+type FuncCommand func(subname string, args []string)
 
-func (f FuncCommand) Exec(args []string) {
-	f(args)
+func (f FuncCommand) Exec(subname string, args []string) {
+	f(subname, args)
 }

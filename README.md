@@ -4,7 +4,7 @@ Frontal
 Yet another Go library for Git way of subcommand.
 
 
-SYNOPSIS
+Synopsis
 --------
 
 You need to just call `frontal.Exec`:
@@ -26,3 +26,15 @@ $ yourcmd sub
 ```
 
 It searches `yourcmd-sub` and runs it with consulting `PATH` env variable.
+
+
+License
+-------
+
+The Simplified BSD License (2-clause). See LICENSE file also.
+
+
+Author
+------
+
+Daisuke (yet another) Maki

@@ -29,6 +29,43 @@ It searches `yourcmd-sub` with consulting `PATH` environment variable and
 execute it passing rest of the arguments.
 
 
+Built-in Command
+----------------
+
+You can implement your subcommand directly in Go by implementing `frontal.Command`
+interface:
+
+```go
+type Command interface {
+	Exec(subname string, args []string)
+}
+```
+
+For your convenience, you can use `FuncCommand` type. For example:
+
+```go
+func main(){
+  frontal.Register("mycmd", frontal.FuncCommand(func(argv0 string, args []string){
+    fmt.Println("This is my command!")
+  }))
+  frontal.Exec()
+}
+```
+
+Frontal has the following predefined built-in subcommands:
+
+- `help`
+  - Shows simple help message
+- `--help`
+  - Alias of `help`
+- `version`
+  - Shows version number
+- `--version`
+  - Alias of `version`
+
+You can easily override them calling `frontal.Register`.
+
+
 License
 -------
 

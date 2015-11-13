@@ -38,7 +38,8 @@ func Exec() {
 		fmt.Printf("%s: '%s' is not a %s command. See '%s --help'.\n", Name, subname, Name, Name)
 		os.Exit(1)
 	}
-	syscall.Exec(cmdname, os.Args[2:], []string{})
+	os.Args[1] = cmdname
+	syscall.Exec(cmdname, os.Args[1:], []string{})
 	// If you are here, exec systemcall failed.
 	// We'll fallback to os/exec module for non-exec-able platfaorm, e.g. Windows.
 	cmd := exec.Command(cmdname, os.Args[2:]...)

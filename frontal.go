@@ -35,7 +35,7 @@ func Exec() {
 	}
 	cmdname := Name + "-" + subname
 	if _, err := exec.LookPath(cmdname); err != nil {
-		fmt.Printf("%s: '%s' is not a %s command. See '%s --help'.\n", Name, subname, Name, Name)
+		fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.\n", Name, subname, Name, Name)
 		os.Exit(1)
 	}
 	os.Args[1] = cmdname

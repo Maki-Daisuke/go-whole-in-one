@@ -1,4 +1,4 @@
-package uum7
+package garry
 
 type Command interface {
 	Exec(subname string, args []string)

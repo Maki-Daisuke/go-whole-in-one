@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Maki-Daisuke/uum7"
+	"github.com/Maki-Daisuke/garry"
 )
 
 func main() {
@@ -20,15 +20,15 @@ func main() {
 	}
 
 	var err error
-	err = uum7.WriteMainGo(name, "0.0.1")
+	err = garry.WriteMainGo(name, "0.0.1")
 	if err != nil {
 		panic(err)
 	}
-	err = uum7.WritePackGo([]byte{})
+	err = garry.WritePackGo([]byte{})
 	if err != nil {
 		panic(err)
 	}
-	err = uum7.WritePackingList(name)
+	err = garry.WritePackingList(name)
 	if err != nil {
 		panic(err)
 	}

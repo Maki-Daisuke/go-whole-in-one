@@ -36,7 +36,7 @@ func main() {
 }
 
 func WritePackGo(data []byte) error {
-	out, err := os.OpenFile("pack.go", os.O_CREATE|os.O_WRONLY, 0644)
+	out, err := os.OpenFile("pack.go", os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}

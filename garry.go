@@ -38,7 +38,7 @@ func Exec(args []string) {
 		os.Exit(1)
 	}
 	args[0] = cmdname
-	syscall.Exec(cmdname, args, []string{})
+	syscall.Exec(cmdname, args, os.Environ())
 	// If you are here, exec systemcall failed.
 	// We'll fallback to os/exec module for non-exec-able platfaorm, e.g. Windows.
 	cmd := exec.Command(cmdname, args[1:]...)

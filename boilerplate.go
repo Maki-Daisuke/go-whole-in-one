@@ -63,6 +63,7 @@ var(
 
 func init() {
 	unpackPath := filepath.Join(os.TempDir(), fmt.Sprintf("garrycache-%%s-%%s-%%s", garry.Name, garry.Version, hash))
+	os.Setenv("PATH", fmt.Sprintf("%%s%%c%%s", unpackPath, os.PathListSeparator, os.Getenv("PATH")))
 	err := os.Mkdir(unpackPath, 0755)
 	if os.IsExist(err) {
 		// Package is already unpacked
@@ -81,7 +82,6 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	os.Setenv("PATH", fmt.Sprintf("%%s%%c%%s", unpackPath, os.PathListSeparator, os.Getenv("PATH")))
 }
 `, data, md5.Sum(data))
 	return err

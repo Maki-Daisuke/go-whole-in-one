@@ -81,7 +81,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	os.Setenv("PATH", fmt.Sprintf("%s%c%s", unpackPath, os.PathListSeparator, os.Getenv("PATH")))
+	os.Setenv("PATH", fmt.Sprintf("%%s%%c%%s", unpackPath, os.PathListSeparator, os.Getenv("PATH")))
 }
 `, data, md5.Sum(data))
 	return err

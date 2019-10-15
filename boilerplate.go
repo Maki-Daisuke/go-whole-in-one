@@ -63,6 +63,7 @@ var(
 
 func init() {
 	unpackPath := filepath.Join(os.TempDir(), fmt.Sprintf("garrycache-%%s-%%s-%%s", garry.Name, garry.Version, hash))
+	os.Setenv("GARRYPATH", unpackPath)
 	os.Setenv("PATH", fmt.Sprintf("%%s%%c%%s", unpackPath, os.PathListSeparator, os.Getenv("PATH")))
 	err := os.Mkdir(unpackPath, 0755)
 	if os.IsExist(err) {

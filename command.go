@@ -1,4 +1,4 @@
-package frontal
+package uum7
 
 type Command interface {
 	Exec(subname string, args []string)

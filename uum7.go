@@ -1,14 +1,13 @@
-package frontal
+package uum7
 
 import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"syscall"
 )
 
-var Name = filepath.Base(os.Args[0])
+var Name = ""
 var Version = "0"
 var builtins = map[string]Command{}
 
@@ -23,14 +22,14 @@ func init() {
 	Register("--version", versionCmd)
 }
 
-func Exec() {
-	if len(os.Args) <= 1 {
+func Exec(args []string) {
+	if len(args) == 0 {
 		builtins["--help"].Exec("--help", []string{})
 		os.Exit(1)
 	}
-	subname := os.Args[1]
+	subname := args[0]
 	if cmd, ok := builtins[subname]; ok {
-		cmd.Exec(subname, os.Args[2:])
+		cmd.Exec(subname, args[1:])
 		os.Exit(0)
 	}
 	cmdname := Name + "-" + subname
@@ -38,11 +37,11 @@ func Exec() {
 		fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.\n", Name, subname, Name, Name)
 		os.Exit(1)
 	}
-	os.Args[1] = cmdname
-	syscall.Exec(cmdname, os.Args[1:], []string{})
+	args[0] = cmdname
+	syscall.Exec(cmdname, args, []string{})
 	// If you are here, exec systemcall failed.
 	// We'll fallback to os/exec module for non-exec-able platfaorm, e.g. Windows.
-	cmd := exec.Command(cmdname, os.Args[2:]...)
+	cmd := exec.Command(cmdname, args[1:]...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

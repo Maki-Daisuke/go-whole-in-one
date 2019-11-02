@@ -1,4 +1,4 @@
-package garry
+package wio
 
 type Command interface {
 	Exec(subname string, args []string)

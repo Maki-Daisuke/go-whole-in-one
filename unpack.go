@@ -50,12 +50,11 @@ func writeFile(dest string, hdr *tar.Header, rd io.Reader) {
 	if err := os.MkdirAll(filepath.Dir(name), 0755); err != nil {
 		panic(err)
 	}
-	// Set file permission based on the original owners permission, regardless of group or others.
-	// Because, we can never expect under which user-ID this file is created.
-	// But whoever created, it is probably needed to be read, executed and written as the author does.
+	// For security consideration, all unpacked files can be accessed only by the command user.
+	// Because, we don't know whether sensitive/confidential data is embedded in the binary.
+	// However, anyone can run the command since each user has her/his own cache directory.
+	// BTW, super users (e.g. root user) can access to unpacked files anyhow.
 	perm := hdr.Mode & 0700
-	perm |= perm >> 3
-	perm |= perm >> 6
 	file, err := os.OpenFile(name, os.O_CREATE|os.O_TRUNC|os.O_RDWR, os.FileMode(perm))
 	if err != nil {
 		panic(err)

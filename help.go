@@ -1,7 +1,17 @@
 package wio
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var helpCmd = FuncCommand(func(_ string, _ []string) {
-	fmt.Printf("usage: %s [--version] [--help] <subcommand> <args>\n", Name)
+	cmds, err := ListSubcommands()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("usage: %s SUBCOMMAND [ARGS...]\n\n", Name)
+	fmt.Println("Available subcommands:")
+	for _, c := range cmds {
+		fmt.Printf("  %s\n", c)
+	}
 })

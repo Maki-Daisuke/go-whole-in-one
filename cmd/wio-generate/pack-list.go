@@ -9,7 +9,7 @@ import (
 	"github.com/mattn/go-forlines"
 )
 
-var paths = strings.Split(os.Getenv("PATH"), string(os.PathListSeparator))
+var paths = filepath.SplitList(os.Getenv("PATH"))
 
 func parsePackingList() []string {
 	file, err := os.Open("./packing-list")

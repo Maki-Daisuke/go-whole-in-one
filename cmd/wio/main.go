@@ -10,7 +10,7 @@ import (
 
 func init() {
 	wio.Name = "wio"
-	wio.Version = "0.0.2"
+	wio.Version = "0.0.3"
 }
 
 func main() {

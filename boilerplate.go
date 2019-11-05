@@ -46,14 +46,11 @@ func WritePackGo(data []byte) error {
 package main
 
 import(
-	//"archive/tar"
-	//"compress/gzip"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
-	"github.com/Maki-Daisuke/go-whole-in-one"
+	wio "github.com/Maki-Daisuke/go-whole-in-one"
 )
 
 var(
@@ -80,14 +77,7 @@ func init() {
 	if data == "" {
 		return
 	}
-	cmd := exec.Command("tar", "-C", unpackPath, "-zxf", "-")
-	cmd.Stdin = strings.NewReader(data)
-	cmd.Stdout = nil
-	cmd.Stderr = os.Stderr
-	err = cmd.Run()
-	if err != nil {
-		panic(err)
-	}
+	wio.Unpack(unpackPath, strings.NewReader(data))
 }
 `, data, md5.Sum(data))
 	return err

@@ -17,8 +17,10 @@ func Register(name string, cmd Command) {
 
 func init() {
 	Register("help", helpCmd)
+	Register("-h", helpCmd)
 	Register("--help", helpCmd)
 	Register("version", versionCmd)
+	Register("-v", versionCmd)
 	Register("--version", versionCmd)
 }
 

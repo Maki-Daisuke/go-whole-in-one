@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	wio "github.com/Maki-Daisuke/go-whole-in-one"
 	"github.com/mattn/go-forlines"
 )
 
@@ -21,10 +22,14 @@ func parsePackingList() []string {
 		if line == "" {
 			return nil
 		}
-		if strings.Contains(line, "/") {
-			found = append(found, findFile(line)...)
+		if strings.Contains(line, "/") || strings.Contains(line, string(filepath.Separator)) {
+			m, err := filepath.Glob(line)
+			mustNotError(err, "")
+			found = append(found, m...)
 		} else {
-			found = append(found, findCmd(line)...)
+			m, err := wio.LookupCmds(line)
+			mustNotError(err, "")
+			found = append(found, m...)
 		}
 		return nil
 	})
@@ -37,20 +42,4 @@ var reTrim = regexp.MustCompile(`^\s*|\s*(?:#.*)$`)
 
 func trimSpaceComment(s string) string {
 	return reTrim.ReplaceAllLiteralString(s, "")
-}
-
-func findCmd(pattern string) []string {
-	found := []string{}
-	for _, path := range paths {
-		m, err := filepath.Glob(filepath.Join(path, pattern))
-		mustNotError(err, "")
-		found = append(found, m...)
-	}
-	return found
-}
-
-func findFile(pattern string) []string {
-	m, err := filepath.Glob(pattern)
-	mustNotError(err, "")
-	return m
 }

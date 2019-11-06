@@ -1,12 +1,7 @@
 package wio
 
 import (
-	"fmt"
-	"os"
-	"os/user"
 	"path/filepath"
-	"strconv"
-	"syscall"
 )
 
 func LookupCmdNames(pattern string) ([]string, error) {
@@ -20,20 +15,13 @@ func LookupCmdNames(pattern string) ([]string, error) {
 	return paths, nil
 }
 
-func LookupCmds(pattern string) ([]string, error) {
-	found := make([]string, 0)
-	for _, path := range filepath.SplitList(os.Getenv("PATH")) {
-		matches, err := filepath.Glob(filepath.Join(path, pattern))
-		if err != nil {
-			return nil, err // malformed pattern
+func LookupCmds(pattern string) (cmds []string, err error) {
+	defer func() {
+		if e := recover(); e != nil {
+			err = e.(error)
 		}
-		for _, m := range matches {
-			if isExecutable(m) {
-				found = append(found, m)
-			}
-		}
-	}
-	return found, nil
+	}()
+	return lookupCmds(pattern), nil
 }
 
 func IsExecutable(path string) (ok bool, err error) {
@@ -44,37 +32,4 @@ func IsExecutable(path string) (ok bool, err error) {
 		}
 	}()
 	return isExecutable(path), nil
-}
-
-func isExecutable(path string) bool {
-	fi, err := os.Stat(path)
-	if err != nil {
-		return false
-	}
-	if fi.IsDir() {
-		return false
-	}
-
-	u, err := user.Current()
-	var mask uint32 = 0001
-	st, ok := (fi.Sys()).(*syscall.Stat_t)
-	if !ok {
-		panic(fmt.Errorf("Can't get syscall.Stat_t of %s", path))
-	}
-	if strconv.FormatUint(uint64(st.Uid), 10) == u.Uid {
-		mask = 0100
-	} else {
-		gid := strconv.FormatUint(uint64(st.Gid), 10)
-		groups, err := u.GroupIds()
-		if err != nil {
-			panic(err)
-		}
-		for _, g := range groups {
-			if g == gid {
-				mask = 0010
-				break
-			}
-		}
-	}
-	return uint32(fi.Mode())&mask != 0
 }

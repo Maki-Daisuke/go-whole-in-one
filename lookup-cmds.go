@@ -5,7 +5,7 @@ import (
 )
 
 func LookupCmdNames(pattern string) ([]string, error) {
-	paths, err := LookupCmds(pattern)
+	paths, err := LookupExecutables(pattern)
 	if err != nil {
 		return nil, err
 	}
@@ -15,13 +15,13 @@ func LookupCmdNames(pattern string) ([]string, error) {
 	return paths, nil
 }
 
-func LookupCmds(pattern string) (cmds []string, err error) {
+func LookupExecutables(pattern string) (cmds []string, err error) {
 	defer func() {
 		if e := recover(); e != nil {
 			err = e.(error)
 		}
 	}()
-	return lookupCmds(pattern), nil
+	return lookupExecutables(pattern), nil
 }
 
 func IsExecutable(path string) (ok bool, err error) {

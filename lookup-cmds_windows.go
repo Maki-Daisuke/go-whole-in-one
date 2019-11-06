@@ -26,7 +26,7 @@ func init() {
 	}
 }
 
-func lookupCmds(pattern string) []string {
+func lookupExecutables(pattern string) []string {
 	var matched []string
 	for _, path := range filepath.SplitList(os.Getenv("PATH")) {
 		m, err := filepath.Glob(filepath.Join(path, pattern))

@@ -11,7 +11,7 @@ import (
 	"syscall"
 )
 
-func lookupCmds(pattern string) []string {
+func lookupExecutables(pattern string) []string {
 	found := make([]string, 0)
 	for _, path := range filepath.SplitList(os.Getenv("PATH")) {
 		matches, err := filepath.Glob(filepath.Join(path, pattern))

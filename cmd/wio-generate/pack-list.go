@@ -27,7 +27,7 @@ func parsePackingList() []string {
 			mustNotError(err, "")
 			found = append(found, m...)
 		} else {
-			m, err := wio.LookupCmds(line)
+			m, err := wio.LookupExecutables(line)
 			mustNotError(err, "")
 			found = append(found, m...)
 		}

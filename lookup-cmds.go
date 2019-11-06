@@ -1,21 +1,6 @@
 package wio
 
-import (
-	"path/filepath"
-)
-
-func LookupCmdNames(pattern string) ([]string, error) {
-	paths, err := LookupExecutables(pattern)
-	if err != nil {
-		return nil, err
-	}
-	for i, p := range paths {
-		paths[i] = filepath.Base(p)
-	}
-	return paths, nil
-}
-
-func LookupExecutables(pattern string) (cmds []string, err error) {
+func LookupExecutables(pattern string) (paths []string, err error) {
 	defer func() {
 		if e := recover(); e != nil {
 			err = e.(error)

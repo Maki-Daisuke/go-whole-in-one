@@ -1,26 +1,35 @@
 package wio
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 )
 
-func ListSubcommands() ([]string, error) {
-	found := make([]string, 0, len(builtins))
+func ListSubcommands() (cmds []string, err error) {
+	cmds = make([]string, 0, len(builtins))
+	check := make(map[string]bool)
+
 	for name := range builtins {
 		if !strings.HasPrefix(name, "-") {
-			found = append(found, name)
+			check[name] = true
+			cmds = append(cmds, name)
 		}
 	}
-	cmds, err := LookupCmdNames(fmt.Sprintf("%s-*", Name))
-	if err != nil {
-		return nil, err
+
+	defer func() {
+		if e := recover(); e != nil {
+			err = e.(error)
+			cmds = nil
+		}
+	}()
+	for _, c := range lookupExternalSubcmds() {
+		c = c[len(Name)+1:]
+		if _, exists := check[c]; exists {
+			continue
+		}
+		check[c] = true
+		cmds = append(cmds, c)
 	}
-	for i, c := range cmds {
-		cmds[i] = c[len(Name)+1:]
-	}
-	found = append(found, cmds...)
-	sort.Strings(found)
-	return found, nil
+	sort.Strings(cmds)
+	return cmds, nil
 }

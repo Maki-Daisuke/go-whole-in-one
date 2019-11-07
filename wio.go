@@ -1,3 +1,12 @@
+/*
+Package wio provides API to customize your command-line application
+written using WIO (Whole-In-One to Go).
+
+You don't need to care most of them, because wio command cares
+on befalf of you.
+
+See https://github.com/Maki-Daisuke/go-whole-in-one for more information.
+*/
 package wio
 
 import (
@@ -7,10 +16,47 @@ import (
 	"syscall"
 )
 
+// Name holds the name of root command.
+// This value is used for vriety of purposes.
+// For example, it is used to make messages output by built-in help and
+// version subcommand, to look up executables for subcommands, and also to
+// determine the name of cache directory.
+//
+// You can overwrite the value to customize the behavior of WIO. For example:
+//
+//   func init(){
+//       wio.Name = "newname"
+//   }
+//
+// Note that you must set Name in init() function, since wio has alreay created
+// cache directory and done preparation stuffs before main() function is called.
 var Name = ""
+
+// Version holds version string of your command. Its default value is `"0"`.
+// This is used in built-in `version` subcommand and also used to determine
+// the name of cache directory.
+//
+// An expected usage is using `-ldflags` command line option when you build
+// your app:
+//
+//   $ go build -ldflags "-X github.com/Maki-Daisuke/wio.Version=0.1"
+//   $ ./your-cmd version
+//   your-cmd version 0.1
 var Version = "0"
+
 var builtins = map[string]Command{}
 
+// Register binds cmd to name as a built-in subcommand.
+// For example, if you register as follows:
+//
+//   wio.Register("foo", wio.FuncCommand(func(argv0 string, argv []string){
+//       fmt.Printf("You called '%s' subcommand with: %v", argv0, argv)
+//   }))
+//
+// Then, you can invoke this function in your command line like this:
+//
+//   $ yourcmd foo bar baz
+//   You called 'foo' subcommand with: [bar baz]
 func Register(name string, cmd Command) {
 	builtins[name] = cmd
 }
@@ -24,6 +70,19 @@ func init() {
 	Register("--version", versionCmd)
 }
 
+// Exec searches a command implementation corresponding to the name of subcommand
+// and executes it. Because it may call exec systemcall, lines following Exec
+// will never be executed:
+//
+//   func main(){
+//       wio.Exec(os.Args[1:])  // This may call exec systemcall inside,
+//       fmt.Println("???")     // thus, execution never reaches here.
+//   }
+//
+// This rule is also the case for built-in commands. Exec calls os.Exit(0)
+// when a built-in command is successfully finished.
+// If you want to return status code from your built-in command,
+// you need to call os.Exit with non-zero integer manually.
 func Exec(args []string) {
 	if len(args) == 0 {
 		builtins["--help"].Exec("--help", []string{})

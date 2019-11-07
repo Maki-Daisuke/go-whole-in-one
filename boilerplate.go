@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+// WriteMainGo is called by wio command to generate main.go.
+// You don't need to use this unless you want to implement your own generator.
 func WriteMainGo(name, version string) error {
 	out, err := os.OpenFile("main.go", os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
 	if err != nil {
@@ -35,6 +37,8 @@ func main() {
 	return err
 }
 
+// WritePackGo is called by wio command to generate pack.go.
+// You don't need to use this unless you want to implement your own generator.
 func WritePackGo(data []byte) error {
 	out, err := os.OpenFile("pack.go", os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
@@ -88,6 +92,8 @@ func init() {
 	return err
 }
 
+// WritePackGo is called by wio command to generate pack.go.
+// You don't need to use this unless you want to implement your own generator.
 func WritePackingList(name string) error {
 	out, err := os.OpenFile("packing-list", os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
 	if err != nil {

@@ -5,6 +5,9 @@ import (
 	"strings"
 )
 
+// ListSubcommands returns names of all available subcommands
+// in sorted order.
+// It is handy to implement your customized help message.
 func ListSubcommands() (cmds []string, err error) {
 	cmds = make([]string, 0, len(builtins))
 	check := make(map[string]bool)

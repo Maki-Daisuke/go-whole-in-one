@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 )
 
+// Unpack is called in Deployment phase by pack.go.
+// You should not call this.
 func Unpack(dest string, data io.Reader) {
 	gz, err := gzip.NewReader(data)
 	if err != nil {

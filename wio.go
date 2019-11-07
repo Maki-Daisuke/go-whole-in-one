@@ -36,12 +36,8 @@ var Name = ""
 // This is used in built-in `version` subcommand and also used to determine
 // the name of cache directory.
 //
-// An expected usage is using `-ldflags` command line option when you build
-// your app:
-//
-//   $ go build -ldflags "-X github.com/Maki-Daisuke/wio.Version=0.1"
-//   $ ./your-cmd version
-//   your-cmd version 0.1
+// As well as Name variable, you must set Version in init() function,
+// before main() is called.
 var Version = "0"
 
 var builtins = map[string]Command{}

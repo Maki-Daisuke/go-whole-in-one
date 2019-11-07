@@ -38,7 +38,7 @@ func parsePackingList() []string {
 	return found
 }
 
-var reTrim = regexp.MustCompile(`^\s*|\s*(?:#.*)$`)
+var reTrim = regexp.MustCompile(`^\s*|\s*(#.*)?$`)
 
 func trimSpaceComment(s string) string {
 	return reTrim.ReplaceAllLiteralString(s, "")

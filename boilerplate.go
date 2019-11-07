@@ -92,7 +92,7 @@ func init() {
 	return err
 }
 
-// WritePackGo is called by wio command to generate pack.go.
+// WritePackingList is called by wio command to generate pack.go.
 // You don't need to use this unless you want to implement your own generator.
 func WritePackingList(name string) error {
 	out, err := os.OpenFile("packing-list", os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)

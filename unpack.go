@@ -41,7 +41,7 @@ func Unpack(dest string, data io.Reader) {
 
 func writeDir(dest string, hdr *tar.Header) {
 	name := filepath.Join(dest, hdr.Name)
-	err := os.MkdirAll(name, 0755)
+	err := os.MkdirAll(name, 0700)
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +49,7 @@ func writeDir(dest string, hdr *tar.Header) {
 
 func writeFile(dest string, hdr *tar.Header, rd io.Reader) {
 	name := filepath.Join(dest, hdr.Name)
-	if err := os.MkdirAll(filepath.Dir(name), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(name), 0700); err != nil {
 		panic(err)
 	}
 	// For security consideration, all unpacked files can be accessed only by the command user.

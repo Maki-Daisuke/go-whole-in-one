@@ -9,7 +9,7 @@ import (
 
 func init() {
 	wio.Name = "wio"
-	wio.Version = "0.0.5"
+	wio.Version = "0.0.6"
 }
 
 func main() {

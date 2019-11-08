@@ -74,24 +74,15 @@ func init() {
 		panic(err)
 	}
 	unpackPath := filepath.Join(os.TempDir(), fmt.Sprintf("wiocache-%%s-%%s-%%s-%%s", wio.Name, wio.Version, u.Uid, hash))
-	os.Setenv("WIOPATH", unpackPath)
-	os.Setenv("PATH", fmt.Sprintf("%%s%%c%%s", unpackPath, os.PathListSeparator, os.Getenv("PATH")))
-	if llp := os.Getenv("LD_LIBRARY_PATH"); llp != "" {
-		os.Setenv("LD_LIBRARY_PATH", fmt.Sprintf("%%s%%c%%s", llp, os.PathListSeparator, unpackPath))
-	} else {
-		os.Setenv("LD_LIBRARY_PATH", unpackPath);
-	}
 	err = os.Mkdir(unpackPath, 0700)
 	if os.IsExist(err) {
-		// Package is already unpacked
-		return
+		// Do nothing because the data is already unpacked
 	} else if err != nil {
 		panic(err)
+	} else if data != "" {
+		wio.Unpack(unpackPath, strings.NewReader(data))
 	}
-	if data == "" {
-		return
-	}
-	wio.Unpack(unpackPath, strings.NewReader(data))
+	wio.SetEnv(unpackPath)
 }
 `, data, md5.Sum(data))
 	return err

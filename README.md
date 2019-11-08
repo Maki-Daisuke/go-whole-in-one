@@ -301,19 +301,15 @@ See API reference for details.
 
 WIO registers the following predefined built-in subcommands by default:
 
-- `help`
+- `help`, `--help`, `-h`
   - Shows simple help message
-- `--help`
-  - Alias of `help`
-- `version`
+- `version`, `--version`, `-v`
   - Shows version number
-- `--version`
-  - Alias of `version`
 
-Yes, `--help` and `--version` look like options, but are actually implemented
+Yes, `--help` and `--version` look like options, but they are actually implemented
 as subcommands.
 
-Of course, you can override them calling `wio.Register`.
+Of course, you can customize your subcommands as you like by editing your `main.go`.
 
 
 API

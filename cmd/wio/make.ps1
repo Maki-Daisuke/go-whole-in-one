@@ -7,4 +7,10 @@ $env:PATH = "$cwd\bin;$env:PATH"
 wio-generate
 $env:PATH = $old
 
-go build
+if ( $args[0] -eq "install" )
+{
+    go install
+}
+else {
+    go build
+}

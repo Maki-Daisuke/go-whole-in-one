@@ -290,10 +290,10 @@ For your convenience, you can use `FuncCommand` type. For example:
 
 ```go
 func main(){
-  wio.Register("mycmd", wio.FuncCommand(func(argv0 string, args []string){
+  wio.Register("mycmd", wio.FuncCommand(func(subname string, args []string){
     fmt.Println("This is my command!")
   }))
-  wio.Exec()
+  wio.Exec(os.Args[1:])
 }
 ```
 

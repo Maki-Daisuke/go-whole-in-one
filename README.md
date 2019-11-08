@@ -27,7 +27,7 @@ Installation
 
 Clone Git repository and run the build script.
 
-For Linux:
+For Linux and macOS:
 
 ```shell
 $ git clone github.com/Maki-Daisuke/go-whole-in-one
@@ -269,13 +269,34 @@ sets the following three environment variables:
     environement variable.
   - In other words, when you invoke a command in subcommands, it will 
     search command executable in the cache directory at first.
-- `LD_LIBRARY_PATH`
+- `LD_LIBRARY_PATH` / `DYLD_LIBRARY_PATH`
   - This allows subcommands dynamically link shared libraries embedded.
   - In cotrast to `PATH`, WIO *appends* cache directory at the tail of 
     `LD_LIBRARY_PATH`. That means, libraries you specify take a priority.
+  - On macOS (Dawrin), `DYLD_LIBRARY_PATH` is set instead of `LD_LIBRARY_PATH`.
 
 After setting those environment variables, it looks up approapriate 
 subcommand and executes it.
+
+**CAVEAT**
+
+Despite WIO sets `DYLD_LIBRARY_PATH` on macOS (Darwin), it does not work 
+as expected in most environments, unfortunately.
+Because of security concerns, `DYLD_LIBRARY_PATH` is ignored by 
+SIP-protected binaries including `/bin/sh`. And, SIP (System Integrity 
+Protection) is enebled by default on El Capitan and newer.
+Thus, the example above to use `jq` does not work on macOS.
+
+However, you can explicitly set `DYLD_LIBRARY_PATH` by yourself like this:
+
+```shell
+#!/bin/sh
+
+export DYLD_LIBRARY_PATH=$WIOPATH
+jq . $*
+```
+
+This works as you expect.
 
 
 Built-in Subcommands

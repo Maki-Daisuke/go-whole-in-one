@@ -57,15 +57,6 @@ func Register(name string, cmd Command) {
 	builtins[name] = cmd
 }
 
-func init() {
-	Register("help", helpCmd)
-	Register("-h", helpCmd)
-	Register("--help", helpCmd)
-	Register("version", versionCmd)
-	Register("-v", versionCmd)
-	Register("--version", versionCmd)
-}
-
 // Exec searches a command implementation corresponding to the name of subcommand
 // and executes it. Because it may call exec systemcall, lines following Exec
 // will never be executed:

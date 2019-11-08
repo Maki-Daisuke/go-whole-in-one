@@ -4,7 +4,9 @@ import (
 	"fmt"
 )
 
-var helpCmd = FuncCommand(func(_ string, _ []string) {
+// HelpCommand is a predefined built-in subcommand, which shows
+// the default help message.
+var HelpCommand = FuncCommand(func(_ string, _ []string) {
 	cmds, err := ListSubcommands()
 	if err != nil {
 		panic(err)

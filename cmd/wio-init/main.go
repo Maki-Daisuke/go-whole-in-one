@@ -18,17 +18,17 @@ func main() {
 	name := ""
 	if len(os.Args) > 1 {
 		name = os.Args[1]
-		if !isValidName(name) {
-			fmt.Fprintf(os.Stderr, "Invalid command name: %s\n", name)
-			fmt.Fprintf(os.Stderr, "You can use the following characters in command name: (),-.0-9=@A-Z[]^_a-z{}~\n")
-			os.Exit(1)
-		}
 	} else {
 		cwd, err := os.Getwd()
 		if err != nil {
 			panic(err)
 		}
 		name = filepath.Base(cwd)
+	}
+	if !isValidName(name) {
+		fmt.Fprintf(os.Stderr, "Invalid command name: %s\n", name)
+		fmt.Fprintf(os.Stderr, "You can use only the following characters in command name: (),-.0-9=@A-Z[]^_a-z{}~\n")
+		os.Exit(1)
 	}
 
 	err := wio.WriteMainGo(name, "0.0.1")

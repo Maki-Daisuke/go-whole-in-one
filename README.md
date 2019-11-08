@@ -32,7 +32,7 @@ For Linux and macOS:
 ```shell
 $ git clone github.com/Maki-Daisuke/go-whole-in-one
 $ cd go-whole-in-one/cmd/wio
-$ ./make.sh
+$ ./make.sh install
 ```
 
 For Windows:
@@ -40,7 +40,7 @@ For Windows:
 ```shell
 $ git clone github.com/Maki-Daisuke/go-whole-in-one
 $ cd go-whole-in-one\cmd\wio
-$ .\make.ps1
+$ .\make.ps1 install
 ```
 
 How to Use

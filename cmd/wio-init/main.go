@@ -4,14 +4,25 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 
 	wio "github.com/Maki-Daisuke/go-whole-in-one"
 )
+
+func isValidName(name string) bool {
+	re := regexp.MustCompile(`[^-(),.0-9=@A-Z[\]^_a-z{}~]`)
+	return len(name) > 0 && !re.MatchString(name)
+}
 
 func main() {
 	name := ""
 	if len(os.Args) > 1 {
 		name = os.Args[1]
+		if !isValidName(name) {
+			fmt.Fprintf(os.Stderr, "Invalid command name: %s\n", name)
+			fmt.Fprintf(os.Stderr, "You can use the following characters in command name: (),-.0-9=@A-Z[]^_a-z{}~\n")
+			os.Exit(1)
+		}
 	} else {
 		cwd, err := os.Getwd()
 		if err != nil {

@@ -2,7 +2,6 @@ package wio
 
 import (
 	"archive/tar"
-	"compress/gzip"
 	"fmt"
 	"io"
 	"os"
@@ -11,13 +10,9 @@ import (
 
 // Unpack is called in Deployment phase by pack.go.
 // You should not call this.
-func Unpack(dest string, data io.Reader) {
-	gz, err := gzip.NewReader(data)
-	if err != nil {
-		panic(err)
-	}
-	defer gz.Close()
-	tr := tar.NewReader(gz)
+func Unpack(dest string, data io.Reader, codec string) {
+	r := uncompressReader(data, codec)
+	tr := tar.NewReader(r)
 	for {
 		hdr, err := tr.Next()
 		if err == io.EOF {

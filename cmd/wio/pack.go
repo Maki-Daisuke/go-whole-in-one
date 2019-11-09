@@ -27,7 +27,7 @@ func init() {
 	} else if err != nil {
 		panic(err)
 	} else if data != "" {
-		wio.Unpack(unpackPath, strings.NewReader(data))
+		wio.Unpack(unpackPath, strings.NewReader(data), "")
 	}
 	wio.SetEnv(unpackPath)
 }

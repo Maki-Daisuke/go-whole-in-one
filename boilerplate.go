@@ -44,7 +44,7 @@ func main() {
 
 // WritePackGo is called by wio command to generate pack.go.
 // You don't need to use this unless you want to implement your own generator.
-func WritePackGo(data []byte) error {
+func WritePackGo(data []byte, codec string) error {
 	out, err := os.OpenFile("pack.go", os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
@@ -80,11 +80,11 @@ func init() {
 	} else if err != nil {
 		panic(err)
 	} else if data != "" {
-		wio.Unpack(unpackPath, strings.NewReader(data))
+		wio.Unpack(unpackPath, strings.NewReader(data), %q)
 	}
 	wio.SetEnv(unpackPath)
 }
-`, data, md5.Sum(data))
+`, data, md5.Sum(data), codec)
 	return err
 }
 

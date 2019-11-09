@@ -51,7 +51,7 @@ func main() {
 		}
 	}
 
-	err = wio.WritePackGo([]byte{})
+	err = wio.WritePackGo([]byte{}, "")
 	if err != nil {
 		panic(err)
 	}

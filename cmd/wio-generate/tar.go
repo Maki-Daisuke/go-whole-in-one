@@ -2,17 +2,25 @@ package main
 
 import (
 	"archive/tar"
-	"compress/gzip"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+
+	wio "github.com/Maki-Daisuke/go-whole-in-one"
 )
 
-func pack(out io.Writer, packList []string) error {
-	gz := gzip.NewWriter(out)
-	defer gz.Close()
-	tw := tar.NewWriter(gz)
+func pack(w io.Writer, packList []string, codec string) error {
+	cw := wio.CompressWriter(w, codec)
+	defer func(){
+		// We need to close writer explicitly to tell codec there's no more data 
+		// and to flush remaining data to underlying buffer.
+		// If cw is not io.Closer, it is bytes.Buffer and no need to close.
+		if closer, ok := cw.(io.Closer); ok {
+			closer.Close()
+		}
+	}()
+	tw := tar.NewWriter(cw)
 	defer tw.Close()
 	for _, path := range packList {
 		path, err := filepath.Abs(path)

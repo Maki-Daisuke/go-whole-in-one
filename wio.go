@@ -72,9 +72,11 @@ func Register(name string, cmd Command) {
 // you need to call os.Exit with non-zero integer manually.
 func Exec(args []string) {
 	if len(args) == 0 {
-		builtins["--help"].Exec("--help", []string{})
+		// No subcommand is provided. Invoke the predefinced help subcommand.
+		HelpCommand.Exec("", nil)
 		os.Exit(1)
 	}
+
 	subname := args[0]
 	if cmd, ok := builtins[subname]; ok {
 		cmd.Exec(subname, args[1:])
@@ -82,7 +84,7 @@ func Exec(args []string) {
 	}
 	cmdname := Name + "-" + subname
 	if _, err := exec.LookPath(cmdname); err != nil {
-		fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.\n", Name, subname, Name, Name)
+		fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command.\n", Name, subname, Name)
 		os.Exit(1)
 	}
 	args[0] = cmdname
